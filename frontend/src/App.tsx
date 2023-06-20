@@ -1,13 +1,13 @@
 import "./App.css";
-import Header from "./components/footer/header";
-import Jogadoreslist from "./components/jogadores";
+import Header from "./components/header";
+import RouterApp from "./routes/public";
 
 function App() {
   return (
-    <>
+    <div>
       <Header />
-      <Jogadoreslist />
-    </>
+      <RouterApp />
+    </div>
   );
 }
 

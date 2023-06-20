@@ -1,48 +1,61 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Container } from './styles';
+import { useEffect, useState } from "react";
+import api from "../../services/api";
 
-
-interface UserData {
-  avatar: string;
-  nomejogador: string;
-  posicao: string;
-  numerocamisa: string;
+interface DadosRec {
+	id: string;
+	nomejogador: string;
+	numerocamisa: number;
+	posicao: string;
+	avatar: string;
+	timesId?: string;
 }
 
-const CardUser = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
-  console.log(userData);
+const PlayerList = () => {
+	const [data, setData] = useState<DadosRec[]>([]);
+	const [carregando, setCarregando] = useState(true);
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/showjogadores');
-        setUserData(response.data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+	useEffect(() => {
+		const fetchData = async () => {
+			try {
+				const response = await api.get("/showjogadores");
+				setData(response.data);
+				setCarregando(false);
 
-    fetchUserData();
-  }, []);
+				console.log(response.data);
+			} catch (error) {
+				console.log(error);
+			}
+		};
 
-  return (
-    <Container>
-      {userData ? (
-        userData.map((dados) => (
-          <div key={dados.id}>
-            <img src={dados.avatar} alt={dados.nomejogador} />
-            <p>Nome: {dados.nomejogador}</p>
-            <p>Posição: {dados.posicao}</p>
-            <p>Numero da Camisa: {dados.numerocamisa}</p>
-          </div>
-        ))
-      ) : (
-        <p>Carregando...</p>
-      )}
-    </Container>
-  );
+		fetchData(); // Chamar a função fetchData para buscar os dados da API
+	}, []);
+
+	return (
+		<div className="flex flex-wrap justify-center pt-6 ">
+			{carregando ? (
+				<div>Carregando Página</div>
+			) : (
+				<ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+					{data.map((jogador) => (
+						<li key={jogador.id} className="bg-gray-200 p-10 shadow-xl rounded-lg">
+							<img
+								className="w-24 h-24 rounded-full mx-auto "
+								src={jogador.avatar}
+								alt={jogador.nomejogador}
+							/>
+							<h2 className="text-xl font-bold text-center mt-4">
+								{jogador.nomejogador}
+							</h2>
+							<p className="text-gray-600 text-center">
+								Camisa: {jogador.numerocamisa}
+							</p>
+							<p className="text-gray-600 text-center">{jogador.posicao}</p>
+						</li>
+					))}
+				</ul>
+			)}
+		</div>
+	);
 };
 
-export default CardUser;
+export default PlayerList;
