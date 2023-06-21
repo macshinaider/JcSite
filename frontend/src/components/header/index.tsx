@@ -2,10 +2,10 @@ import logo from '../../assets/logo.svg'
 
 const Header = () => {
   return (
-    <header className="bg-gray-800 py-4">
+    <header className="bg-gray-800">
       <nav className="container mx-auto flex justify-between items-center">
         <div className="text-white text-lg sm:text-xl">
-          <img src={logo} alt="logo" className="w-20 h-auto inline-block text-blue-500 sm:w-40" />
+          <img src={logo} alt="logo" className="w-20 h-auto inline-block text-blue-500 sm:w-30" />
           Jc Society
         </div>
         <ul className="flex space-x-4 sm:space-x-6">
